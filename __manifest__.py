@@ -4,8 +4,7 @@
     'version': '17.0.1.0.1',
     'summary': "Hospital management module for training purposes",
     'description': """
-This is an exclusively free module created for educational purposes. 
-It provides a hospital management system, including doctors, patients, disease types, and appointments.
+This is an exclusively free module created for educational purposes.
     """,
     'author': "Odoo School",
     'website': "https://odoo.school/",

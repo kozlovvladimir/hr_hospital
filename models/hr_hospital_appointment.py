@@ -1,5 +1,5 @@
 from odoo import models, fields, api, exceptions
-from datetime import datetime
+
 
 class Appointment(models.Model):
     _name = 'hospital.appointment'

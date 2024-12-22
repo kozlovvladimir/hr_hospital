@@ -40,4 +40,3 @@ class Doctor(models.Model):
     def write(self, vals):
         """Метод редагування запису."""
         return super(Doctor, self).write(vals)
-
