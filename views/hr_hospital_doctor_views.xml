@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <!-- Дія для моделі Doctor -->
+        <!-- Визначення дії, яка дозволяє відкривати список (tree) та форму (form) для моделі hospital.doctor -->
+        <record id="action_hospital_doctor" model="ir.actions.act_window">
+            <field name="name">Doctors</field> <!-- Назва дії, яка відображатиметься в інтерфейсі -->
+            <field name="res_model">hospital.doctor</field> <!-- Модель, до якої прив'язана дія -->
+            <field name="view_mode">tree,form</field> <!-- Режими відображення: список (tree) і форма (form) -->
+        </record>
+
+        <!-- Головне меню "Hospital Management" -->
+        <!-- Основне меню для модуля управління лікарнею -->
+        <menuitem id="menu_hospital_root" name="Hospital Management" sequence="1"/>
+
+        <!-- Підменю для управління лікарями -->
+        <!-- Це підменю містить посилання на дію, яка відображає список і форму для моделі hospital.doctor -->
+        <menuitem id="menu_hospital_doctor" parent="menu_hospital_root" name="Doctors" action="action_hospital_doctor" sequence="10"/>
+
+        <!-- Представлення списку (tree view) для моделі Doctor -->
+        <!-- Визначення представлення у вигляді списку для моделі hospital.doctor -->
+        <record id="view_doctor_tree" model="ir.ui.view">
+            <field name="name">hospital.doctor.tree</field> <!-- Унікальне ім'я представлення -->
+            <field name="model">hospital.doctor</field> <!-- Модель, до якої відноситься представлення -->
+            <field name="arch" type="xml">
+                <tree>
+                    <!-- Поле "name" для відображення імені лікаря -->
+                    <field name="name"/>
+                    <!-- Поле "specialization" для відображення спеціалізації лікаря -->
+                    <field name="specialization"/>
+                    <!-- Поле "gender" для відображення статі лікаря -->
+                    <field name="gender"/>
+                    <!-- Поле "phone" для відображення телефону лікаря -->
+                    <field name="phone"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Представлення форми (form view) для моделі Doctor -->
+        <!-- Визначення представлення у вигляді форми для моделі hospital.doctor -->
+        <record id="view_doctor_form" model="ir.ui.view">
+            <field name="name">hospital.doctor.form</field> <!-- Унікальне ім'я представлення -->
+            <field name="model">hospital.doctor</field> <!-- Модель, до якої відноситься представлення -->
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <!-- Група для базової інформації про лікаря -->
+                        <group>
+                            <!-- Поле "name" для введення імені лікаря -->
+                            <field name="name"/>
+                            <!-- Поле "date_of_birth" для введення дати народження -->
+                            <field name="date_of_birth"/>
+                            <!-- Поле "gender" для введення статі лікаря -->
+                            <field name="gender"/>
+                            <!-- Поле "phone" для введення телефону лікаря -->
+                            <field name="phone"/>
+                        </group>
+                        <!-- Використання вкладок (notebook) для організації інформації -->
+                        <notebook>
+                            <!-- Вкладка для введення спеціалізації лікаря -->
+                            <page string="Specialization">
+                                <field name="specialization"/>
+                            </page>
+                            <!-- Вкладка для введення інформації про відносини (інтерн і наставник) -->
+                            <page string="Relationships">
+                                <field name="intern"/>
+                                <field name="mentor"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

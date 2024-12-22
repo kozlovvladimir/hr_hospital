@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <!-- Визначення представлення списку (tree view) для моделі hospital.disease.type -->
+        <record id="view_disease_type_tree" model="ir.ui.view">
+            <field name="name">hr.hospital.disease.type.tree</field>
+            <field name="model">hospital.disease.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="severity"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Визначення представлення форми (form view) для моделі hospital.disease.type -->
+        <record id="view_disease_type_form" model="ir.ui.view">
+            <field name="name">hr.hospital.disease.type.form</field>
+            <field name="model">hospital.disease.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="severity"/>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Symptoms">
+                                <field name="symptoms"/>
+                            </page>
+                            <page string="Treatment">
+                                <field name="treatment"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Дія для моделі Disease Type -->
+        <record id="action_hospital_disease_type" model="ir.actions.act_window">
+            <field name="name">Disease Types</field> <!-- Назва дії -->
+            <field name="res_model">hospital.disease.type</field> <!-- Модель -->
+            <field name="view_mode">tree,form</field> <!-- Режими представлення -->
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_disease_type_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_disease_type_form')})]"/>
+        </record>
+    </data>
+</odoo>

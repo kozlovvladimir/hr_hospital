@@ -1,0 +1,25 @@
+<odoo>
+    <record id="disease_type_flu" model="hospital.disease.type">
+        <field name="name">Flu</field>
+        <field name="description">A common viral infection.</field>
+        <field name="symptoms">Fever, chills, muscle aches.</field>
+        <field name="treatment">Rest, hydration, antiviral medication.</field>
+        <field name="severity">medium</field>
+    </record>
+
+    <record id="disease_type_covid19" model="hospital.disease.type">
+        <field name="name">COVID-19</field>
+        <field name="description">Respiratory illness caused by the SARS-CoV-2 virus.</field>
+        <field name="symptoms">Fever, cough, difficulty breathing.</field>
+        <field name="treatment">Supportive care, oxygen therapy.</field>
+        <field name="severity">high</field>
+    </record>
+
+    <record id="disease_type_diabetes" model="hospital.disease.type">
+        <field name="name">Diabetes</field>
+        <field name="description">Chronic condition affecting blood sugar.</field>
+        <field name="symptoms">Increased thirst, frequent urination.</field>
+        <field name="treatment">Insulin, dietary changes.</field>
+        <field name="severity">medium</field>
+    </record>
+</odoo>

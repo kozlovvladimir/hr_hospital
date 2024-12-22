@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+
+        <record id="action_hospital_patient" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Визначення представлення списку (tree view) для моделі hospital.patient -->
+        <record id="view_patient_tree" model="ir.ui.view">
+            <field name="name">hr.hospital.patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="birth_date"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Визначення представлення форми (form view) для моделі hospital.patient -->
+        <record id="view_patient_form" model="ir.ui.view">
+            <field name="name">hr.hospital.patient.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="1"/>
+                            <field name="gender"/>
+                            <field name="phone"/>
+                        </group>
+                        <notebook>
+                            <page string="Passport Info">
+                                <field name="passport_data"/>
+                                <field name="related_contact"/>
+                            </page>
+                            <page string="Medical Information">
+                                <field name="doctor"/>
+                                <field name="disease_type_id"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

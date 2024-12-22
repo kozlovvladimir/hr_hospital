@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <!-- Визначення представлення списку (tree view) для моделі hospital.appointment -->
+        <record id="view_appointment_tree" model="ir.ui.view">
+            <field name="name">hr.hospital.appointment.tree</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="doctor"/>
+                    <field name="patient"/>
+                    <field name="appointment_date"/>
+                    <field name="is_done"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Визначення представлення форми (form view) для моделі hospital.appointment -->
+        <record id="view_appointment_form" model="ir.ui.view">
+            <field name="name">hr.hospital.appointment.form</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="doctor"/>
+                            <field name="patient"/>
+                            <field name="appointment_date"/>
+                        </group>
+                        <notebook>
+                            <page string="Diagnosis">
+                                <field name="diagnosis"/>
+                                <field name="recommendations"/>
+                            </page>
+                            <page string="Status">
+                                <field name="is_done"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Визначення дії (action) для моделі hospital.appointment -->
+        <record id="action_hospital_appointment" model="ir.actions.act_window">
+            <field name="name">Appointments</field> <!-- Назва дії -->
+            <field name="res_model">hospital.appointment</field> <!-- Модель -->
+            <field name="view_mode">tree,form</field> <!-- Режими відображення -->
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_appointment_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_appointment_form')})]"/>
+        </record>
+    </data>
+</odoo>
