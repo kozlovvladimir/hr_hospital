@@ -1,55 +1,60 @@
-from odoo import models, fields, api
 from datetime import date
+from odoo import models, fields, api
 
 
 class Patient(models.Model):
     _name = 'hospital.patient'
     _description = 'Patient'
 
-    # Основна інформація про пацієнта
-    name = fields.Char(string='Повне ім’я', required=True)  # Ім’я пацієнта
-    birth_date = fields.Date(string='Дата народження', required=True)  # Дата народження
+    # Basic information about the patient
+    name = fields.Char(string='Full Name', required=True)  # Patient's name
+    birth_date = fields.Date(string='Date of Birth',
+                             required=True)  # Date of birth
     gender = fields.Selection([
-        ('male', 'Чоловік'),
-        ('female', 'Жінка'),
-        ('other', 'Інше')
-    ], string='Стать', required=True)  # Стать пацієнта
-    phone = fields.Char(string='Номер телефону')  # Номер телефону
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ], string='Gender', required=True)  # Patient's gender
+    phone = fields.Char(string='Phone Number')  # Phone number
 
-    # Поле для віку, яке обчислюється автоматично
-    age = fields.Integer(string='Вік', compute='_compute_age', store=True)
+    # Field for age, computed automatically
+    age = fields.Integer(string='Age', compute='_compute_age', store=True)
 
-    # Паспортні дані пацієнта
-    passport_data = fields.Char(string='Паспортні дані')
+    # Patient's passport data
+    passport_data = fields.Char(string='Passport Data')
 
-    # Пов'язаний контакт (інший пацієнт)
+    # Related contact (another patient)
     related_contact = fields.Many2one(
-        'hospital.patient',
-        string='Пов’язаний контакт',
-        help="Оберіть пов’язаний контакт з інших пацієнтів",
-        domain="[('id', '!=', id)]",  # Не дозволяє обирати самого себе
-        context={'no_create': True}   # Вимикає можливість створення нового запису
+        comodel_name='hospital.patient',
+        string='Related Contact',
+        help="Select a related contact from other patients",
+        domain="[('id', '!=', id)]",  # Prevents selecting the same patient
+        context={'no_create': True}  # Disables creating a new record
     )
 
-    # Поле для лікаря, який відповідає за пацієнта
-    doctor = fields.Many2one('hospital.doctor', string='Особистий лікар')
+    # Doctor assigned to the patient
+    doctor = fields.Many2one(
+        comodel_name='hospital.doctor',
+        string='Personal Doctor'
+    )
 
-    # Вид захворювання пацієнта
+    # Patient's disease type
     disease_type_id = fields.Many2one(
-        'hospital.disease.type',
+        comodel_name='hospital.disease.type',
         string='Disease Type',
         help='Disease the patient is suffering from'
     )
 
     @api.depends('birth_date')
     def _compute_age(self):
-        """Обчислення віку на основі дати народження."""
+        """Calculate age based on the date of birth."""
         for record in self:
             if record.birth_date:
                 today = date.today()
                 birth_date = record.birth_date
                 record.age = today.year - birth_date.year - (
-                    (today.month, today.day) < (birth_date.month, birth_date.day)
+                    (today.month, today.day) < (birth_date.month,
+                                                birth_date.day)
                 )
             else:
                 record.age = 0

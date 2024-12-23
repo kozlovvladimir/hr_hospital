@@ -3,9 +3,6 @@
     'name': "HR Hospital",
     'version': '17.0.1.0.1',
     'summary': "Hospital management module for training purposes",
-    'description': """
-This is an exclusively free module created for educational purposes.
-    """,
     'author': "Odoo School",
     'website': "https://odoo.school/",
     'category': 'Education',
@@ -16,12 +13,12 @@ This is an exclusively free module created for educational purposes.
 
     # Файли даних, які завантажуються завжди
     'data': [
-        'security/ir.model.access.csv',  # Права доступу
-        'views/hr_hospital_doctor_views.xml',  # Представлення для Doctor
-        'views/hr_hospital_patient_views.xml',  # Представлення для Patient
-        'views/hr_hospital_disease_type_views.xml',  # Представлення для Disease Type
-        'views/hr_hospital_appointment_views.xml',  # Представлення для Appointment
-        'views/hr_hospital_menus.xml',  # Меню
+        'security/ir.model.access.csv',
+        'views/hr_hospital_doctor_views.xml',
+        'views/hr_hospital_patient_views.xml',
+        'views/hr_hospital_disease_type_views.xml',
+        'views/hr_hospital_appointment_views.xml',
+        'views/hr_hospital_menus.xml',
     ],
 
     # Демонстраційні дані (тільки в режимі демонстрації)
@@ -35,7 +32,7 @@ This is an exclusively free module created for educational purposes.
     # Додаткові параметри
     'installable': True,  # Модуль можна встановити
     'application': True,  # Відображати модуль як додаток
-    'auto_install': False,  # Модуль не встановлюється автоматично з іншими модулями
+    'auto_install': False,  # Модуль не встановлюється автоматично з іншими
 
     # Зображення для сторінки програми
     'images': [

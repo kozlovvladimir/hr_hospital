@@ -1,42 +1,43 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 
 
 class Doctor(models.Model):
     _name = 'hospital.doctor'
     _description = 'Doctor'
 
-    # Основна інформація про лікаря
-    name = fields.Char(string='Повне ім’я', required=True)  # Ім’я лікаря (обов’язкове поле)
-    date_of_birth = fields.Date(string='Дата народження')  # Дата народження
-    gender = fields.Selection([
-        ('male', 'Чоловік'),
-        ('female', 'Жінка'),
-        ('other', 'Інше')
-    ], string='Стать')  # Стать лікаря
-    phone = fields.Char(string='Номер телефону')  # Номер телефону
+    # Basic information about the doctor
+    name = fields.Char(string='Full Name',
+                       required=True)  # Doctor's name (required)
+    date_of_birth = fields.Date(string='Date of Birth')  # Date of birth
+    gender = fields.Selection(selection=[
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    ], string='Gender')  # Doctor's gender
+    phone = fields.Char(string='Phone Number')  # Phone number
 
-    # Спеціалізація лікаря
-    specialization = fields.Char(string='Спеціалізація', required=True)  # Спеціалізація лікаря (обов’язкове поле)
-
-    # Поле для зв’язку з інтерном (учнем лікаря)
-    intern = fields.Many2one('hospital.doctor', string="Інтерн")  # Інтерн (пов'язаний запис)
-
-    # Поле для зв’язку з ментором (наставником лікаря)
-    mentor = fields.Many2one('hospital.doctor', string="Ментор")  # Ментор (пов'язаний запис)
+    # Doctor's specialization
+    specialization = fields.Char(
+        string='Specialization', required=True)  # Specialization (required)
+    intern = fields.Many2one(comodel_name='hospital.doctor', string='Intern'
+                             )  # Intern (linked record)
+    mentor = fields.Many2one(comodel_name='hospital.doctor',
+                             string='Mentor')  # Mentor (linked record)
 
     @api.constrains('intern', 'mentor')
     def _check_mentor_intern(self):
-        """Перевірка, щоб інтерн і ментор не були однією й тією самою особою."""
+        """Ensure the intern and mentor are not the same person."""
         for record in self:
             if record.intern and record.intern == record.mentor:
-                # Якщо інтерн і ментор одна й та сама особа, підняти помилку
-                raise exceptions.ValidationError("Інтерн не може бути своїм власним наставником.")
+                raise exceptions.ValidationError(
+                    _("The intern cannot be their own mentor.")
+                )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        """Метод створення запису."""
+        """Record creation method."""
         return super(Doctor, self).create(vals)
 
     def write(self, vals):
-        """Метод редагування запису."""
+        """Record editing method."""
         return super(Doctor, self).write(vals)
