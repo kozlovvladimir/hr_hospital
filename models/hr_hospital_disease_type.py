@@ -15,7 +15,7 @@ class DiseaseType(models.Model):
         ('low', 'Low'),
         ('medium', 'Medium'),
         ('high', 'High')
-    ], string='Severity Level', default='low')  # Рівень тяжкості
+    ], string='Severity Level', default='low')  # Рівень важкості
 
     # Поля для ієрархічної структури
     parent_id = fields.Many2one(
