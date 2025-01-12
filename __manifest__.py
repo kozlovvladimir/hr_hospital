@@ -16,8 +16,11 @@
         'security/ir.model.access.csv',
         'views/hr_hospital_doctor_views.xml',
         'views/hr_hospital_patient_views.xml',
+        'wizard/hr_hospital_change_doctor_wizard_views.xml',
+        'wizard/hr_hospital_diagnosis_report_wizard_views.xml',
         'views/hr_hospital_disease_type_views.xml',
         'views/hr_hospital_appointment_views.xml',
+        'views/hr_hospital_diagnosis_views.xml',
         'views/hr_hospital_menus.xml',
     ],
 

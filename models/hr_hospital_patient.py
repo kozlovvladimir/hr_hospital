@@ -1,60 +1,99 @@
+import logging
 from datetime import date
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+
+_logger = logging.getLogger(__name__)
 
 
 class Patient(models.Model):
     _name = 'hospital.patient'
-    _description = 'Patient'
+    _inherit = 'hr.hospital.person'  # Наслідує поля
+    # та поведінку від абстрактної моделі
+    _description = 'Пацієнт'
 
-    # Basic information about the patient
-    name = fields.Char(string='Full Name', required=True)  # Patient's name
-    birth_date = fields.Date(string='Date of Birth',
-                             required=True)  # Date of birth
-    gender = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other')
-    ], string='Gender', required=True)  # Patient's gender
-    phone = fields.Char(string='Phone Number')  # Phone number
+    # Специфічні поля для пацієнтів
+    birth_date = fields.Date(
+        string='Дата народження',
+        required=True,  # Поле обов'язкове для заповнення
+    )
+    age = fields.Integer(
+        string='Вік',
+        compute='_compute_age',
+        store=True,  # Зберігати значення у базі даних
+    )
+    passport_data = fields.Char(
+        string='Паспортні дані',
+        # Дані паспорта або ідентифікаційного документа
+    )
 
-    # Field for age, computed automatically
-    age = fields.Integer(string='Age', compute='_compute_age', store=True)
-
-    # Patient's passport data
-    passport_data = fields.Char(string='Passport Data')
-
-    # Related contact (another patient)
+    # Поле для зв’язку з іншими пацієнтами
     related_contact = fields.Many2one(
         comodel_name='hospital.patient',
-        string='Related Contact',
-        help="Select a related contact from other patients",
-        domain="[('id', '!=', id)]",  # Prevents selecting the same patient
-        context={'no_create': True}  # Disables creating a new record
+        string='Пов’язаний контакт',
+        help="Виберіть пов’язаний контакт серед інших пацієнтів",
+        domain="[('id', '!=', id)]",
+        # Унеможливлює вибір самого себе як пов'язаного контакту
+        context={'no_create': True},
+        # Забороняє створення нового пацієнта через це поле
     )
 
-    # Doctor assigned to the patient
+    # Поле для призначення лікаря пацієнту
     doctor = fields.Many2one(
         comodel_name='hospital.doctor',
-        string='Personal Doctor'
+        string='Особистий лікар',  # Лікар, який відповідає за пацієнта
     )
 
-    # Patient's disease type
+    # Поле для вказання типу захворювання пацієнта
     disease_type_id = fields.Many2one(
         comodel_name='hospital.disease.type',
-        string='Disease Type',
-        help='Disease the patient is suffering from'
+        string='Тип захворювання',
+        help='Захворювання, на яке страждає пацієнт',
     )
 
     @api.depends('birth_date')
     def _compute_age(self):
-        """Calculate age based on the date of birth."""
+        """Розрахувати вік пацієнта на основі його дати народження."""
         for record in self:
-            if record.birth_date:
-                today = date.today()
-                birth_date = record.birth_date
-                record.age = today.year - birth_date.year - (
-                    (today.month, today.day) < (birth_date.month,
-                                                birth_date.day)
-                )
-            else:
+            try:
+                if record.birth_date:
+                    today = date.today()
+                    birth_date = record.birth_date
+                    record.age = today.year - birth_date.year - (
+                        (today.month, today.day) <
+                        (birth_date.month, birth_date.day)
+                    )
+                else:
+                    record.age = 0  # Якщо дата народження не вказана,
+                    # вік дорівнює 0
+            except Exception as e:
                 record.age = 0
+                _logger.warning(
+                    "Помилка при обчисленні віку для пацієнта "
+                    "%(patient)s: %(error)s") % {
+                    'patient': record.name,
+                    'error': str(e)
+                }
+
+    @api.constrains('doctor', 'related_contact')
+    def _check_related_doctor(self):
+        """Перевірка, що пов’язаний пацієнт не має того ж лікаря."""
+        for record in self:
+            if (record.related_contact
+                    and record.related_contact.doctor == record.doctor):
+                raise models.ValidationError(
+                    _("Пов'язаний пацієнт не може мати того ж лікаря.")
+                )
+
+    @api.model
+    def action_open_change_doctor_wizard(self):
+        """
+        Метод для відкриття візарда зміни лікаря для вибраних пацієнтів.
+        """
+        active_ids = self.env.context.get('active_ids', [])
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hospital.change.doctor.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_ids': active_ids},  # Передаємо вибрані записи
+        }

@@ -8,6 +8,7 @@
                 <tree>
                     <field name="name"/>
                     <field name="severity"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>
@@ -22,6 +23,7 @@
                         <group>
                             <field name="name"/>
                             <field name="severity"/>
+                            <field name="parent_id"/>
                         </group>
                         <notebook>
                             <page string="Description">
@@ -34,6 +36,12 @@
                                 <field name="treatment"/>
                             </page>
                         </notebook>
+                        <field name="child_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="severity"/>
+                            </tree>
+                        </field>
                     </sheet>
                 </form>
             </field>
@@ -41,9 +49,9 @@
 
         <!-- Дія для моделі Disease Type -->
         <record id="action_hospital_disease_type" model="ir.actions.act_window">
-            <field name="name">Disease Types</field> <!-- Назва дії -->
-            <field name="res_model">hospital.disease.type</field> <!-- Модель -->
-            <field name="view_mode">tree,form</field> <!-- Режими представлення -->
+            <field name="name">Disease Types</field>
+            <field name="res_model">hospital.disease.type</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_ids" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_disease_type_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_disease_type_form')})]"/>

@@ -1,55 +1,44 @@
 <odoo>
     <data>
-
+        <!-- Дія для моделі hospital.patient -->
         <record id="action_hospital_patient" model="ir.actions.act_window">
-            <field name="name">Patients</field>
-            <field name="res_model">hospital.patient</field>
-            <field name="view_mode">tree,form</field>
+            <field name="name">Пацієнти</field> <!-- Назва дії -->
+            <field name="res_model">hospital.patient</field> <!-- Модель, яку буде відкривати дія -->
+            <field name="view_mode">tree,form</field> <!-- Режими перегляду: список та форма -->
         </record>
 
-        <!-- Визначення представлення списку (tree view) для моделі hospital.patient -->
+        <!-- Представлення списку пацієнтів -->
         <record id="view_patient_tree" model="ir.ui.view">
-            <field name="name">hr.hospital.patient.tree</field>
-            <field name="model">hospital.patient</field>
+            <field name="name">hospital.patient.tree</field> <!-- Назва представлення -->
+            <field name="model">hospital.patient</field> <!-- Модель для цього представлення -->
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
-                    <field name="birth_date"/>
-                    <field name="age"/>
-                    <field name="gender"/>
-                    <field name="phone"/>
+                    <field name="surname"/> <!-- Прізвище пацієнта -->
+                    <field name="name"/> <!-- Ім'я пацієнта -->
+                    <field name="birth_date"/> <!-- Дата народження -->
+                    <field name="age"/> <!-- Вік пацієнта -->
+                    <field name="gender"/> <!-- Стать пацієнта -->
+                    <field name="phone"/> <!-- Номер телефону -->
                 </tree>
             </field>
         </record>
 
-        <!-- Визначення представлення форми (form view) для моделі hospital.patient -->
-        <record id="view_patient_form" model="ir.ui.view">
-            <field name="name">hr.hospital.patient.form</field>
-            <field name="model">hospital.patient</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="birth_date"/>
-                            <field name="age" readonly="1"/>
-                            <field name="gender"/>
-                            <field name="phone"/>
-                        </group>
-                        <notebook>
-                            <page string="Passport Info">
-                                <field name="passport_data"/>
-                                <field name="related_contact"/>
-                            </page>
-                            <page string="Medical Information">
-                                <field name="doctor"/>
-                                <field name="disease_type_id"/>
-                            </page>
-                        </notebook>
-                    </sheet>
-                </form>
+        <!-- Прив'язка дії "Change Doctor" до списку пацієнтів -->
+        <record id="action_change_doctor_in_tree" model="ir.actions.server">
+            <field name="name">Change Doctor</field> <!-- Назва дії -->
+            <field name="model_id" ref="model_hospital_patient"/> <!-- Модель для дії -->
+            <field name="binding_model_id" ref="model_hospital_patient"/> <!-- Прив'язка до моделі -->
+            <field name="state">multi</field> <!-- Тип дії для багатьох записів -->
+            <field name="binding_type">action</field> <!-- Тип прив'язки: дія -->
+            <field name="code">
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'hospital.change.doctor.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {'active_ids': records.ids},
+                }
             </field>
         </record>
-
     </data>
 </odoo>

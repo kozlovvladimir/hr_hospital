@@ -40,5 +40,12 @@
                   sequence="40"
                   action="action_hospital_disease_type"/>
 
+        <menuitem id="menu_hospital_diagnosis"
+                  parent="menu_hospital_root"
+                  name="Diagnoses"
+                  sequence="50"
+                  action="action_hospital_diagnosis"/>
+
+
     </data>
 </odoo>

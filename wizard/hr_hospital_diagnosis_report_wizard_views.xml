@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <!-- Дія для виклику візарда -->
+        <record id="action_diagnosis_report_wizard" model="ir.actions.act_window">
+            <field name="name">Звіт по діагнозам</field>
+            <field name="res_model">hospital.diagnosis.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Форма для візарда -->
+        <record id="view_diagnosis_report_wizard_form" model="ir.ui.view">
+            <field name="name">Diagnosis Report Wizard Form</field>
+            <field name="model">hospital.diagnosis.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Створення звіту по діагнозам">
+                    <group>
+                        <!-- Поле для вибору лікарів -->
+                        <field name="doctor_ids" widget="many2many_tags"/>
+
+                        <!-- Поле для вибору хвороб -->
+                        <field name="disease_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <!-- Поля для вказання періоду -->
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <!-- Кнопка для генерації звіту -->
+                        <button string="Згенерувати звіт"
+                                type="object"
+                                name="action_generate_report"
+                                class="btn-primary"/>
+                        <!-- Кнопка для скасування -->
+                        <button string="Скасувати" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

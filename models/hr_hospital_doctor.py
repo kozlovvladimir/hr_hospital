@@ -3,41 +3,52 @@ from odoo import models, fields, api, exceptions, _
 
 class Doctor(models.Model):
     _name = 'hospital.doctor'
+    _inherit = 'hr.hospital.person'
     _description = 'Doctor'
 
-    # Basic information about the doctor
-    name = fields.Char(string='Full Name',
-                       required=True)  # Doctor's name (required)
-    date_of_birth = fields.Date(string='Date of Birth')  # Date of birth
-    gender = fields.Selection(selection=[
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other')
-    ], string='Gender')  # Doctor's gender
-    phone = fields.Char(string='Phone Number')  # Phone number
+    # Doctor's specialization (Selection)
+    specialization = fields.Selection(
+        selection=[
+            ('cardiologist', 'Cardiologist'),
+            ('neurologist', 'Neurologist'),
+            ('pediatrician', 'Pediatrician'),
+            ('general_practitioner', 'General Practitioner'),
+            ('surgeon', 'Surgeon'),
+        ],
+        required=True,
+        help='Specialization of the doctor'
+    )
+    is_intern = fields.Boolean(string='Intern', default=False)
+    mentor_id = fields.Many2one(
+        comodel_name='hospital.doctor',
+        string='Mentor',
+        help='Mentor for the intern',
+        domain="[('is_intern', '=', False)]"
+    )
+    intern_ids = fields.One2many(
+        comodel_name='hospital.doctor',
+        inverse_name='mentor_id',
+        string='Interns'
+    )
 
-    # Doctor's specialization
-    specialization = fields.Char(
-        string='Specialization', required=True)  # Specialization (required)
-    intern = fields.Many2one(comodel_name='hospital.doctor', string='Intern'
-                             )  # Intern (linked record)
-    mentor = fields.Many2one(comodel_name='hospital.doctor',
-                             string='Mentor')  # Mentor (linked record)
-
-    @api.constrains('intern', 'mentor')
-    def _check_mentor_intern(self):
-        """Ensure the intern and mentor are not the same person."""
+    @api.constrains('mentor_id', 'is_intern')
+    def _check_mentor_and_intern(self):
+        """Ensure the intern is not their own mentor."""
         for record in self:
-            if record.intern and record.intern == record.mentor:
+            if record.is_intern and not record.mentor_id:
                 raise exceptions.ValidationError(
-                    _("The intern cannot be their own mentor.")
+                    _("An intern must have a mentor assigned.")
+                )
+            if record.mentor_id == record:
+                raise exceptions.ValidationError(
+                    _("An intern cannot be their own mentor.")
                 )
 
-    @api.model_create_multi
-    def create(self, vals):
-        """Record creation method."""
-        return super(Doctor, self).create(vals)
-
-    def write(self, vals):
-        """Record editing method."""
-        return super(Doctor, self).write(vals)
+    @api.constrains('mentor_id')
+    def _check_mentor_not_intern(self):
+        """Ensure the mentor is not an intern."""
+        for record in self:
+            if record.mentor_id and record.mentor_id.is_intern:
+                raise exceptions.ValidationError(
+                    _("A mentor cannot be an intern.")
+                )

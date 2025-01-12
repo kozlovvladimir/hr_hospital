@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="view_change_doctor_wizard_form" model="ir.ui.view">
+            <field name="name">hospital.change.doctor.wizard.form</field>
+            <field name="model">hospital.change.doctor.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Change Doctor">
+                    <group>
+                        <field name="doctor_id" required="1"/>
+                        <field name="patient_ids" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button string="Apply" type="object" name="action_apply_change" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
