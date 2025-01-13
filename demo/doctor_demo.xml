@@ -4,7 +4,7 @@
         <field name="date_of_birth">1970-01-01</field>
         <field name="gender">male</field>
         <field name="phone">+123456789</field>
-        <field name="specialization">Cardiologist</field>
+        <field name="specialization">cardiologist</field>
     </record>
 
     <record id="doctor_jane_smith" model="hospital.doctor">
@@ -12,7 +12,7 @@
         <field name="date_of_birth">1980-05-15</field>
         <field name="gender">female</field>
         <field name="phone">+987654321</field>
-        <field name="specialization">Pediatrician</field>
+        <field name="specialization">pediatrician</field>
     </record>
 
     <record id="doctor_emily_white" model="hospital.doctor">
@@ -20,6 +20,6 @@
         <field name="date_of_birth">1990-09-10</field>
         <field name="gender">female</field>
         <field name="phone">+456789123</field>
-        <field name="specialization">Dermatologist</field>
+        <field name="specialization">general_practitioner'/field>
     </record>
 </odoo>

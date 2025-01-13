@@ -23,22 +23,5 @@
             </field>
         </record>
 
-        <!-- Прив'язка дії "Change Doctor" до списку пацієнтів -->
-        <record id="action_change_doctor_in_tree" model="ir.actions.server">
-            <field name="name">Change Doctor</field> <!-- Назва дії -->
-            <field name="model_id" ref="model_hospital_patient"/> <!-- Модель для дії -->
-            <field name="binding_model_id" ref="model_hospital_patient"/> <!-- Прив'язка до моделі -->
-            <field name="state">multi</field> <!-- Тип дії для багатьох записів -->
-            <field name="binding_type">action</field> <!-- Тип прив'язки: дія -->
-            <field name="code">
-                action = {
-                    'type': 'ir.actions.act_window',
-                    'res_model': 'hospital.change.doctor.wizard',
-                    'view_mode': 'form',
-                    'target': 'new',
-                    'context': {'active_ids': records.ids},
-                }
-            </field>
-        </record>
     </data>
 </odoo>

@@ -16,5 +16,15 @@
                 </form>
             </field>
         </record>
+        <!-- Прив'язка дії "Change Doctor" до списку пацієнтів -->
+        <record id="action_change_doctor_in_tree1"
+                model="ir.actions.act_window">
+            <field name="name">Change Doctor</field> <!-- Назва дії -->
+            <field name="res_model">hospital.change.doctor.wizard</field>
+            <field name="binding_model_id"
+                   ref="model_hospital_patient"/> <!-- Прив'язка до моделі -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
     </data>
 </odoo>
