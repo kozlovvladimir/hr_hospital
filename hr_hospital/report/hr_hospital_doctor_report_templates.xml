@@ -1,0 +1,92 @@
+<odoo>
+    <template id="doctor_report_template">
+        <t t-call="web.html_container">
+            <t t-set="object" t-value="docs"/>
+            <t t-set="company" t-value="user.company_id"/>
+            <t t-call="web.external_layout">
+
+                <!-- Логотип та контактна інформація компанії -->
+                <div class="text-center">
+                    <img t-if="company.logo" t-att-src="'/web/image/res.company/%s/logo' % company.id"
+                         style="max-height: 80px;"/>
+                    <h3 t-esc="company.name"/>
+                    <p>
+                        <t t-esc="company.phone"/>
+                        |
+                        <t t-esc="company.email"/>
+                        |
+                        <t t-esc="company.city"/>
+                    </p>
+                </div>
+
+                <!-- Заголовок -->
+                <div>
+                    <h2 class="text-center" t-esc="object.name"/>
+                    <h4 class="text-center"
+                        t-esc="dict(object.fields_get(allfields=['specialization'])['specialization']['selection']).get(object.specialization, '')"/>
+                </div>
+
+                <!-- Історія візитів -->
+                <h3>Історія візитів</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Пацієнт</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="object.appointment_ids.sorted(lambda r: r.planned_date, reverse=True)"
+                            t-as="appointment">
+                            <td t-esc="appointment.planned_date.strftime('%Y-%m-%d')"/>
+                            <td t-esc="appointment.patient.name"/>
+                            <td>
+                                <t t-if="appointment.status == 'planned'">
+                                    <span style="color: yellow;">Заплановано</span>
+                                </t>
+                                <t t-if="appointment.status == 'done'">
+                                    <span style="color: green;">Завершено</span>
+                                </t>
+                                <t t-if="appointment.status == 'cancelled'">
+                                    <span style="color: red;">Скасовано</span>
+                                </t>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Список пацієнтів -->
+                <h3>Пацієнти лікаря</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>ПІБ</th>
+                            <th>Стать</th>
+                            <th>Дата народження</th>
+                            <th>Телефон</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="object.patient_ids" t-as="patient">
+                            <td t-esc="patient.name"/>
+                            <td t-esc="dict(patient.fields_get(allfields=['gender'])['gender']['selection']).get(patient.gender, '')"/>
+                            <td t-esc="patient.birth_date"/>
+                            <td t-esc="patient.phone"/>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Футер -->
+                <div class="text-center">
+                    <p>Звіт створено:
+                        <t t-esc="object.create_date.now().strftime('%Y-%m-%d %H:%M:%S')"/>
+                    </p>
+                    <p>Місто:
+                        <t t-esc="company.city"/>
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

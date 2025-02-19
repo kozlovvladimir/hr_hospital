@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+        <!-- Дія для моделі hospital.patient -->
+        <record id="action_hospital_patient" model="ir.actions.act_window">
+            <field name="name">Пацієнти</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Представлення списку пацієнтів -->
+        <record id="view_patient_tree" model="ir.ui.view">
+            <field name="name">hospital.patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="surname"/>
+                    <field name="name"/>
+                    <field name="birth_date"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Представлення форми пацієнтів -->
+        <record id="view_patient_form" model="ir.ui.view">
+            <field name="name">hospital.patient.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <form string="Пацієнт">
+                    <sheet>
+                        <group>
+                            <field name="surname"/>
+                            <field name="name"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="1"/>
+                            <field name="gender"/>
+                            <field name="phone"/>
+                            <field name="passport_data"/>
+                            <field name="doctor"/>
+                            <field name="disease_type_id"/>
+                        </group>
+                        <notebook>
+                            <!-- Вкладка "Історія діагнозів" -->
+                            <page string="Історія діагнозів">
+                                <field name="diagnosis_ids">
+                                    <tree>
+                                        <field name="appointment_id"/>
+                                        <field name="disease_id"/>
+                                        <field name="description"/>
+                                        <field name="approved"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <!-- Вкладка "Історія візитів" -->
+                            <page string="Історія візитів">
+                                <field name="appointment_ids">
+                                    <tree>
+                                        <field name="doctor"/>
+                                        <field name="planned_date"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Історія візитів" type="object"
+                                name="action_open_appointment_history"
+                                class="btn-secondary"/>
+                        <button string="Створити візит" type="object"
+                                name="action_create_appointment"
+                                class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Представлення пошуку -->
+        <record id="view_patient_search" model="ir.ui.view">
+            <field name="name">hospital.patient.search</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="surname"/>
+                    <field name="name"/>
+                    <field name="phone"/>
+                    <group expand="1" string="Групувати за">
+                        <filter name="group_doctor" string="Лікар" context="{'group_by': 'doctor'}"/>
+                        <filter name="group_disease" string="Тип захворювання" context="{'group_by': 'disease_type_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,77 @@
+<odoo>
+    <data>
+        <!-- Визначення представлення списку (tree view) для моделі hospital.disease.type -->
+        <record id="view_disease_type_tree" model="ir.ui.view">
+            <field name="name">hr.hospital.disease.type.tree</field>
+            <field name="model">hospital.disease.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="severity"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Визначення представлення форми (form view) для моделі hospital.disease.type -->
+        <record id="view_disease_type_form" model="ir.ui.view">
+            <field name="name">hr.hospital.disease.type.form</field>
+            <field name="model">hospital.disease.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="severity"/>
+                            <field name="parent_id" options="{'hierarchy': True}"/>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Symptoms">
+                                <field name="symptoms"/>
+                            </page>
+                            <page string="Treatment">
+                                <field name="treatment"/>
+                            </page>
+                        </notebook>
+                        <field name="child_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="severity"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Визначення пошукового представлення (search view) для моделі hospital.disease.type -->
+        <record id="view_disease_type_search" model="ir.ui.view">
+            <field name="name">hr.hospital.disease.type.search</field>
+            <field name="model">hospital.disease.type</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name"/>
+                    <field name="severity" string="Severity"/>
+                    <field name="description" string="Description"/>
+                    <filter string="Low Severity" name="low_severity" domain="[('severity', '=', 'low')]"/>
+                    <filter string="Medium Severity" name="medium_severity" domain="[('severity', '=', 'medium')]"/>
+                    <filter string="High Severity" name="high_severity" domain="[('severity', '=', 'high')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Дія для моделі Disease Type -->
+        <record id="action_hospital_disease_type" model="ir.actions.act_window">
+            <field name="name">Disease Types</field>
+            <field name="res_model">hospital.disease.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_disease_type_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_disease_type_form')})]"/>
+            <field name="search_view_id" ref="view_disease_type_search"/>
+        </record>
+    </data>
+</odoo>

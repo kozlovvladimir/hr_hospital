@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="diagnosis_1" model="hospital.diagnosis">
+            <field name="appointment_id" ref="demo_appointment_1"/>
+            <field name="disease_id" ref="disease_type_influenza"/>
+            <field name="patient_id" ref="patient_michael_jackson"/>
+            <field name="doctor_id" ref="doctor_john_doe"/>
+            <field name="description">Prescribed medication and rest.</field>
+            <field name="approved">True</field>
+        </record>
+
+        <record id="diagnosis_2" model="hospital.diagnosis">
+            <field name="appointment_id" ref="demo_appointment_2"/>
+            <field name="disease_id" ref="disease_type_h1n1"/>
+            <field name="patient_id" ref="patient_sarah_connor"/>
+            <field name="doctor_id" ref="doctor_jane_smith"/>
+            <field name="description">Recommended surgery.</field>
+            <field name="approved">True</field>
+        </record>
+
+        <record id="diagnosis_3" model="hospital.diagnosis">
+            <field name="appointment_id" ref="demo_appointment_3"/>
+            <field name="disease_id" ref="disease_type_covid19"/>
+            <field name="patient_id" ref="patient_tom_cruise"/>
+            <field name="doctor_id" ref="doctor_emily_white"/>
+            <field name="description">Diet adjustment and monitoring.</field>
+            <field name="approved">False</field>
+        </record>
+
+        <record id="diagnosis_4" model="hospital.diagnosis">
+            <field name="appointment_id" ref="demo_appointment_4"/>
+            <field name="disease_id" ref="disease_type_long_covid"/>
+            <field name="patient_id" ref="patient_michael_jackson"/>
+            <field name="doctor_id" ref="doctor_john_doe"/>
+            <field name="description">Physical therapy sessions.</field>
+            <field name="approved">True</field>
+        </record>
+
+    </data>
+</odoo>
