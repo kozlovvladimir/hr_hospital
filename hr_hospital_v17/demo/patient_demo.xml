@@ -1,0 +1,28 @@
+<odoo>
+    <record id="patient_michael_jackson" model="hospital.patient">
+        <field name="name">Michael Jackson</field>
+        <field name="birth_date">1995-02-20</field>
+        <field name="gender">male</field>
+        <field name="phone">+123123123</field>
+        <field name="doctor" ref="doctor_john_doe"/>
+        <field name="disease_type_id" ref="disease_type_influenza"/>
+    </record>
+
+    <record id="patient_sarah_connor" model="hospital.patient">
+        <field name="name">Sarah Connor</field>
+        <field name="birth_date">1987-06-15</field>
+        <field name="gender">female</field>
+        <field name="phone">+321321321</field>
+        <field name="doctor" ref="doctor_jane_smith"/>
+        <field name="disease_type_id" ref="disease_type_covid19"/>
+    </record>
+
+    <record id="patient_tom_cruise" model="hospital.patient">
+        <field name="name">Tom Cruise</field>
+        <field name="birth_date">1970-07-03</field>
+        <field name="gender">male</field>
+        <field name="phone">+231231231</field>
+        <field name="doctor" ref="doctor_emily_white"/>
+        <field name="disease_type_id" ref="disease_type_diabetes"/>
+    </record>
+</odoo>

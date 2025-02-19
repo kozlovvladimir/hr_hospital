@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <!-- Головне меню "Hospital Management" -->
+        <!-- Це основне меню для модуля управління лікарнею. Воно буде розташоване у головній панелі навігації. -->
+        <menuitem id="menu_hospital_root" name="Hospital Management" sequence="1"/>
+
+        <!-- Підменю для моделі Doctor -->
+        <!-- Це підменю для управління лікарями.
+        Воно містить посилання на представлення списку та форм для моделі hospital.doctor. -->
+        <menuitem id="menu_hospital_doctor"
+                  parent="menu_hospital_root"
+                  name="Doctors"
+                  sequence="10"
+                  action="action_hospital_doctor"/>
+
+        <!-- Підменю для моделі Patient -->
+        <!-- Це підменю для управління пацієнтами.
+        Воно містить посилання на представлення списку та форм для моделі hospital.patient. -->
+        <menuitem id="menu_hospital_patient"
+                  parent="menu_hospital_root"
+                  name="Patients"
+                  sequence="20"
+                  action="action_hospital_patient"/>
+
+        <!-- Підменю для моделі Appointment -->
+        <!-- Це підменю для управління записами на прийом.
+        Воно містить посилання на представлення списку та форм для моделі hospital.appointment. -->
+        <menuitem id="menu_hospital_appointment"
+                  parent="menu_hospital_root"
+                  name="Appointments"
+                  sequence="30"
+                  action="action_hospital_appointment"/>
+
+        <!-- Підменю для моделі Disease Type -->
+        <!-- Це підменю для управління типами захворювань.
+        Воно містить посилання на представлення списку та форм для моделі hospital.disease.type. -->
+        <menuitem id="menu_hospital_disease_type"
+                  parent="menu_hospital_root"
+                  name="Disease Types"
+                  sequence="40"
+                  action="action_hospital_disease_type"/>
+
+        <menuitem id="menu_hospital_diagnosis"
+                  parent="menu_hospital_root"
+                  name="Diagnoses"
+                  sequence="50"
+                  action="action_hospital_diagnosis"/>
+
+
+    </data>
+</odoo>

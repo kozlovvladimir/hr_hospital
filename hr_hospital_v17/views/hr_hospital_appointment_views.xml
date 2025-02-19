@@ -1,0 +1,110 @@
+<odoo>
+    <data>
+        <!-- Представлення списку (Tree View) -->
+        <record id="view_hospital_appointment_tree" model="ir.ui.view">
+            <field name="name">hospital.appointment.tree</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <tree string="Прийоми">
+                    <field name="doctor"/> <!-- Лікар -->
+                    <field name="patient"/> <!-- Пацієнт -->
+                    <field name="planned_date"/> <!-- Запланована дата -->
+                    <field name="actual_date"/> <!-- Фактична дата -->
+                    <field name="status"/> <!-- Статус прийому -->
+                </tree>
+            </field>
+        </record>
+
+        <!-- Представлення форми (Form View) -->
+        <record id="view_hospital_appointment_form" model="ir.ui.view">
+            <field name="name">hospital.appointment.form</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <form string="Прийом">
+                    <!-- Статусбар -->
+                    <header>
+                        <field name="status" widget="statusbar" statusbar_visible="planned,done,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="doctor"/> <!-- Лікар -->
+                            <field name="patient"/> <!-- Пацієнт -->
+                            <field name="planned_date"/> <!-- Запланована дата -->
+                            <field name="actual_date"/> <!-- Фактична дата -->
+                        </group>
+                        <notebook>
+                            <!-- Вкладка "Діагнози" -->
+                            <page string="Діагнози">
+                                <field name="diagnosis_ids">
+                                    <tree string="Діагнози">
+                                        <field name="disease_id"/> <!-- Захворювання -->
+                                        <field name="description"/> <!-- Опис -->
+                                        <field name="approved"/> <!-- Затверджено -->
+                                    </tree>
+                                </field>
+                            </page>
+                            <!-- Вкладка "Рекомендації" -->
+                            <page string="Рекомендації">
+                                <field name="recommendations"/> <!-- Рекомендації -->
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Представлення календаря (Calendar View) -->
+        <record id="view_hospital_appointment_calendar" model="ir.ui.view">
+            <field name="name">hospital.appointment.calendar</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <calendar string="Календар прийомів" date_start="planned_date" color="status">
+                    <field name="doctor"/> <!-- Лікар -->
+                    <field name="patient"/> <!-- Пацієнт -->
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Представлення пошуку (Search View) -->
+        <record id="view_hospital_appointment_search" model="ir.ui.view">
+            <field name="name">hospital.appointment.search</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <search string="Пошук прийомів">
+                    <field name="doctor"/> <!-- Лікар -->
+                    <field name="patient"/> <!-- Пацієнт -->
+                    <field name="status"/> <!-- Статус -->
+                    <group expand="1" string="Групувати за">
+                        <filter name="group_status" string="Статус" context="{'group_by': 'status'}"/>
+                        <filter name="group_doctor" string="Лікар" context="{'group_by': 'doctor'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Представлення зведеної таблиці (Pivot View) -->
+        <record id="view_hospital_appointment_pivot" model="ir.ui.view">
+            <field name="name">hospital.appointment.pivot</field>
+            <field name="model">hospital.appointment</field>
+            <field name="arch" type="xml">
+                <pivot string="Зведена таблиця прийомів">
+                    <field name="doctor" type="row"/> <!-- Групування за лікарем -->
+                    <field name="status" type="col"/> <!-- Групування за статусом -->
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Дія (Action) для моделі hospital.appointment -->
+        <record id="action_hospital_appointment" model="ir.actions.act_window">
+            <field name="name">Прийоми</field> <!-- Назва дії -->
+            <field name="res_model">hospital.appointment</field> <!-- Модель -->
+            <field name="view_mode">tree,form,calendar,pivot</field> <!-- Доступні представлення -->
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_hospital_appointment_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_hospital_appointment_form')}),
+                (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_hospital_appointment_calendar')}),
+                (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_hospital_appointment_pivot')})]"/>
+            <field name="search_view_id" ref="view_hospital_appointment_search"/>
+        </record>
+    </data>
+</odoo>
