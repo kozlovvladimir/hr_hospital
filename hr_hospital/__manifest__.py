@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hr_hospital_v17",
+    'name': "hr_hospital",
     'version': '17.0.1.0.1',
     'summary': "Hospital management module for training purposes",
     'author': "Odoo School",
